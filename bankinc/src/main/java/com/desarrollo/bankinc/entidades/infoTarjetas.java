@@ -33,8 +33,8 @@ public class infoTarjetas {
     @Column(name = "numero_tc_enmascarada", nullable = false, length = 16)
     private String numeroTcEnmascarada;
 
-    @Column(name = "fecha_tc", nullable = false)
-    private Date fechaTc;
+    @Column(name = "fecha_tc", nullable = false, length = 7)
+    private String fechaTc;
 
     @Column(name = "id_producto", nullable = false)
     private long idProducto;
