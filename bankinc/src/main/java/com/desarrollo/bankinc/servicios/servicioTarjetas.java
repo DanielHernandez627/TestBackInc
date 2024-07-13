@@ -58,6 +58,36 @@ public class servicioTarjetas implements Serializable {
 
         rtarjetas.save(tarjetas);
 
-        return numero_tc_enmascarado;
+        return numero_tc;
+    }
+
+    public boolean activarTC(String cardId){
+
+        boolean state = false;
+
+        tarjetas = rtarjetas.findByNumeroTc(cardId);
+
+        if (tarjetas != null){
+            tarjetas.setIndActivo(true);
+            rtarjetas.save(tarjetas);
+            state = true;
+        }
+
+        return state;
+    }
+
+    public boolean inactivarTC(String cardId){
+
+        boolean state = false;
+
+        tarjetas = rtarjetas.findByNumeroTc(cardId);
+
+        if (tarjetas != null){
+            tarjetas.setIndActivo(false);
+            rtarjetas.save(tarjetas);
+            state = true;
+        }
+
+        return state;
     }
 }
