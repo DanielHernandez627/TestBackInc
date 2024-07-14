@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@NoArgsConstructor
 public class ctlTransacciones {
 
     @Autowired
     servicioCompra sCompra;
-
-
 
     @PostMapping("/transaction/purchase")
     public ResponseEntity<responseGeneracionCompraTc> purchase(@RequestBody bodyPurchase bodyPurchase){

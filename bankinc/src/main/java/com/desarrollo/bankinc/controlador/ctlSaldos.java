@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@NoArgsConstructor
 public class ctlSaldos {
 
     @Autowired
