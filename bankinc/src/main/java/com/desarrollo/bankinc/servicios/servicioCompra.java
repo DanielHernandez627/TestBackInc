@@ -7,12 +7,16 @@ import com.desarrollo.bankinc.entidades.infoTarjetas;
 import com.desarrollo.bankinc.repositorios.repositorioCSaldos;
 import com.desarrollo.bankinc.repositorios.repositorioCTransaccion;
 import com.desarrollo.bankinc.repositorios.repositorioinfoTarjetas;
-import com.desarrollo.bankinc.utilidades.enmascarado;
+import com.desarrollo.bankinc.utilidades.utilidad;
 import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 
@@ -35,14 +39,16 @@ public class servicioCompra {
     infoTarjetas tarjetas = new infoTarjetas();
     controlSaldos saldos = new controlSaldos();
     controlTransacciones transacciones = new controlTransacciones();
-    enmascarado utilidad = new enmascarado();
+    com.desarrollo.bankinc.utilidades.utilidad utilidad = new utilidad();
     controlCompra cCompra = new controlCompra();
 
+    //Metodo para generacion de compras
     public controlCompra generacionCompra(String cardId,int price){
         tarjetas = rtarjetas.findByNumeroTc(cardId);
         saldos = csaldos.findByIdTc(tarjetas.getId());
 
         Date fechaActual = new Date();
+        LocalTime currentTime = LocalTime.now();
 
         //Verificacion de filtros para transaccion
         if(tarjetas.getIndActivo() && !tarjetas.getIndbloqueo() && utilidad.verificacionVigencia(tarjetas.getFechaTc()) && saldos.getSaldoActual() > 0){
@@ -57,6 +63,8 @@ public class servicioCompra {
                 transacciones.setValorcompra(price);
                 transacciones.setFechacompra(fechaActual);
                 transacciones.setNombrecomercio(faker.company().name());
+                transacciones.setIndAnulado(false);
+                transacciones.setHoraCompra(currentTime);
                 cTransaccion.save(transacciones);
                 cCompra.setConfirm(true);
                 cCompra.setPrice(price);
@@ -75,6 +83,7 @@ public class servicioCompra {
         return cCompra;
     }
 
+    //Metodo para consulta de compra
     public controlCompra consultaCompra(Long transactionId){
         Optional<controlTransacciones> respuesta = cTransaccion.findById(transactionId);
         tarjetas = rtarjetas.findByIdTc(respuesta.get().getIdtc());
@@ -87,4 +96,31 @@ public class servicioCompra {
         return cCompra;
     }
 
+    //Metodo para anular transaccion
+    public boolean anulacionTransaccion(String cardId,String transactionId){
+
+        boolean state = false;
+
+        transacciones = cTransaccion.findByIdTs(Long.valueOf(transactionId));
+
+        LocalDate fechaCompra = transacciones.getFechacompra().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        if (utilidad.verificacionTiempo(fechaCompra,transacciones.getHoraCompra())){
+            //Anulacion de transaccion
+            transacciones.setIndAnulado(true);
+            cTransaccion.save(transacciones);
+
+            //Actualizacion de saldo
+            tarjetas = rtarjetas.findByNumeroTc(cardId);
+            saldos = csaldos.findByIdTc(tarjetas.getId());
+            saldos.setSaldoAnterior(saldos.getSaldoActual());
+            saldos.setSaldoActual(saldos.getSaldoActual() + transacciones.getValorcompra());
+            csaldos.save(saldos);
+            state = true;
+        }
+
+        return state;
+    }
 }

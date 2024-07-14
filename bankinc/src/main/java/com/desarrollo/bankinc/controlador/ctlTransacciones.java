@@ -16,6 +16,8 @@ public class ctlTransacciones {
     @Autowired
     servicioCompra sCompra;
 
+
+
     @PostMapping("/transaction/purchase")
     public ResponseEntity<responseGeneracionCompraTc> purchase(@RequestBody bodyPurchase bodyPurchase){
 
@@ -38,6 +40,21 @@ public class ctlTransacciones {
         cCompra = sCompra.consultaCompra(transactionId);
 
         return getResponseGeneracionCompraTcResponseEntity(cCompra, generacionCompra);
+    }
+
+    @PostMapping("/transaction/anulation")
+    public ResponseEntity<responseAnulacionTs> annulmentTransaction(@RequestBody bodyAnulacion bodyAnulacion){
+        responseAnulacionTs anulacionTs = new responseAnulacionTs();
+        boolean respuestaTransaccion = sCompra.anulacionTransaccion(bodyAnulacion.getCardId(), bodyAnulacion.getTransactionId());
+        if (respuestaTransaccion){
+            anulacionTs.setStatus(200);
+            anulacionTs.setMessage("Exito");
+        }else{
+            anulacionTs.setStatus(400);
+            anulacionTs.setMessage("Fallo");
+        }
+
+        return ResponseEntity.status(200).body(anulacionTs);
     }
 
     private ResponseEntity<responseGeneracionCompraTc> getResponseGeneracionCompraTcResponseEntity(controlCompra cCompra, responseGeneracionCompraTc generacionCompra) {

@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
-public class bodyEnroll {
+public class bodyAnulacion {
     private String cardId;
+    private String transactionId;
 }
