@@ -41,4 +41,7 @@ public class infoTarjetas {
 
     @Column(name = "ind_activo", nullable = false)
     private Boolean indActivo;
+
+    @Column(name = "ind_bloqueo", nullable = false)
+    private Boolean indbloqueo;
 }

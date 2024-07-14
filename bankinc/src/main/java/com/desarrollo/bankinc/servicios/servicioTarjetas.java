@@ -55,6 +55,7 @@ public class servicioTarjetas implements Serializable {
         tarjetas.setIndActivo(false);
         tarjetas.setIdProducto(productos.findByCodigo(productId).getId());
         tarjetas.setNumeroTcEnmascarada(numero_tc_enmascarado);
+        tarjetas.setIndbloqueo(false);
 
         rtarjetas.save(tarjetas);
 
