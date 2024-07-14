@@ -3,7 +3,7 @@ package com.desarrollo.bankinc.servicios;
 import com.desarrollo.bankinc.entidades.infoTarjetas;
 import com.desarrollo.bankinc.repositorios.repositorioinfoTarjetas;
 import com.desarrollo.bankinc.repositorios.repositorioProductos;
-import com.desarrollo.bankinc.utilidades.enmascarado;
+import com.desarrollo.bankinc.utilidades.utilidad;
 import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.Random;
 public class servicioTarjetas implements Serializable {
 
     infoTarjetas tarjetas = new infoTarjetas();
-    enmascarado Uenmascarado = new enmascarado();
+    utilidad uenmascarado = new utilidad();
     private final Faker faker = new Faker();
 
     @Autowired
@@ -39,7 +39,7 @@ public class servicioTarjetas implements Serializable {
         Random random = new Random();
         long number = (long) (random.nextDouble() * 1_000_000_0000L);
         numero_tc = productId + number;
-        numero_tc_enmascarado = Uenmascarado.enmascararNumero(numero_tc);
+        numero_tc_enmascarado = uenmascarado.enmascararNumero(numero_tc);
 
         //Generacion fecha vencimiento
         String fecha_vencimiento = null;

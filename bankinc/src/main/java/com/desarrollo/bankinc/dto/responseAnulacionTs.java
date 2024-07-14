@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
-public class bodyEnroll {
-    private String cardId;
+public class responseAnulacionTs {
+    private int status;
+    private String message;
 }

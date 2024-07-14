@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity(name = "controlTransacciones")
@@ -32,5 +33,11 @@ public class controlTransacciones {
 
     @Column(name = "id_tc", nullable = false)
     private long idtc;
+
+    @Column(name = "ind_anulado", nullable = false)
+    private boolean indAnulado;
+
+    @Column(name = "hora_compra", nullable = false, columnDefinition = "TIME")
+    private LocalTime horaCompra;
 
 }

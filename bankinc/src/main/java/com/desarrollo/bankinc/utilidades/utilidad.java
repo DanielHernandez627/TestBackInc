@@ -1,11 +1,14 @@
 package com.desarrollo.bankinc.utilidades;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 
-public class enmascarado {
+public class utilidad {
 
     //Metodo para enmascarar el numero de la TC
     public String enmascararNumero(String numero) {
@@ -39,5 +42,19 @@ public class enmascarado {
             System.err.println("Fecha no válida: " + dateStr);
             return false;
         }
+    }
+
+    //Metodo para verificacion de tiempo transcurrido para anulacion
+    public boolean verificacionTiempo(LocalDate fechaEvento, LocalTime horaEvento) {
+        try{
+            LocalDateTime fechaHoraEvento = LocalDateTime.of(fechaEvento, horaEvento);
+            LocalDateTime fechaHoraActual = LocalDateTime.now();
+            long horasTranscurridas = ChronoUnit.HOURS.between(fechaHoraEvento, fechaHoraActual);
+            return horasTranscurridas < 24;
+        }catch (DateTimeParseException e){
+            System.err.println("Hora no validad");
+            return false;
+        }
+
     }
 }
