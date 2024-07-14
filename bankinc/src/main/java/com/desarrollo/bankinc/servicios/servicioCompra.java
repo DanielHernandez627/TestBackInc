@@ -62,6 +62,7 @@ public class servicioCompra {
                 cCompra.setPrice(price);
                 cCompra.setCardId(tarjetas.getNumeroTcEnmascarada());
                 cCompra.setId_compra(cTransaccion.findMaxId());
+                cCompra.setFecha_compra(transacciones.getFechacompra());
             }else{
                 cCompra.setMessageError("Saldo insuficiente para la compra");
                 cCompra.setConfirm(false);
@@ -76,10 +77,12 @@ public class servicioCompra {
 
     public controlCompra consultaCompra(Long transactionId){
         Optional<controlTransacciones> respuesta = cTransaccion.findById(transactionId);
-        tarjetas = rtarjetas.findByNumeroTc(String.valueOf(respuesta.get().getIdtc()));
+        tarjetas = rtarjetas.findByIdTc(respuesta.get().getIdtc());
         cCompra.setCardId(tarjetas.getNumeroTcEnmascarada());
         cCompra.setPrice(respuesta.get().getValorcompra());
         cCompra.setFecha_compra(respuesta.get().getFechacompra());
+        cCompra.setId_compra(transactionId);
+        cCompra.setConfirm(true);
 
         return cCompra;
     }

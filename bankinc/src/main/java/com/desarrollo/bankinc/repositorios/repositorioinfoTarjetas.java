@@ -15,4 +15,7 @@ public interface repositorioinfoTarjetas extends JpaRepository<infoTarjetas,Long
     @Query("SELECT u FROM infoTarjetas u WHERE u.numeroTc =?1 ")
     infoTarjetas findByNumeroTc(String cardId);
 
+    @Query("SELECT u FROM infoTarjetas u WHERE u.id =?1 ")
+    infoTarjetas findByIdTc(Long id);
+
 }
