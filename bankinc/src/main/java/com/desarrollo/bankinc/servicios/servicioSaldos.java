@@ -27,6 +27,7 @@ public class servicioSaldos {
 
     //Metodo para la creacion inicial de los saldos
     public void generacionSaldoTc(String cardId){
+        inicializarST();
         tarjetas = rtarjetas.findByNumeroTc(cardId);
         int saldoFinal = 0;
 
@@ -43,7 +44,7 @@ public class servicioSaldos {
 
     //Metodo para recargar la TC
     public controlSaldosTc recargaTc(String cardId,int balance){
-
+        inicializarST();
         tarjetas = rtarjetas.findByNumeroTc(cardId);
 
         int saldoFinal = 0;
@@ -68,11 +69,18 @@ public class servicioSaldos {
 
     //Metodo para la consulta del saldo
     public controlSaldosTc consultaSaldo(String cardId){
+        inicializarST();
         tarjetas = rtarjetas.findByNumeroTc(cardId);
         saldos = cSaldos.findByIdTc(tarjetas.getId());
 
         saldosTc.setBalance(saldos.getSaldoActual());
 
         return saldosTc;
+    }
+
+    public void inicializarST(){
+        this.saldos = new controlSaldos();
+        this.tarjetas = new infoTarjetas();
+        this.saldosTc = new controlSaldosTc();
     }
 }
