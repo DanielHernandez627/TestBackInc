@@ -31,7 +31,7 @@ public class servicioTarjetas implements Serializable {
 
     public String generarNumeroTC(String productId){
 
-        boolean state = false;
+        this.tarjetas = new infoTarjetas();
 
         //Generacion de numero de TC
         String numero_tc = null;

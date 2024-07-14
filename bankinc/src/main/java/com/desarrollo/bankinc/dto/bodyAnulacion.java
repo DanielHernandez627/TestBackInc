@@ -2,8 +2,7 @@ package com.desarrollo.bankinc.dto;
 
 import lombok.*;
 
-@Data
-@AllArgsConstructor
+
 @NoArgsConstructor
 @Setter
 @Getter
