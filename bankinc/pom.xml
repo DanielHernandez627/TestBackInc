@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.desarrollo</groupId>
 	<artifactId>bankinc</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>bankinc</name>
 	<description>technical test project</description>
 	<url/>

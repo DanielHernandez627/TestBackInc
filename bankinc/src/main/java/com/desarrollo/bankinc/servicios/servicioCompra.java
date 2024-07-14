@@ -1,6 +1,7 @@
 package com.desarrollo.bankinc.servicios;
 
 import com.desarrollo.bankinc.dto.controlCompra;
+import com.desarrollo.bankinc.dto.controlSaldosTc;
 import com.desarrollo.bankinc.entidades.controlSaldos;
 import com.desarrollo.bankinc.entidades.controlTransacciones;
 import com.desarrollo.bankinc.entidades.infoTarjetas;
@@ -49,6 +50,7 @@ public class servicioCompra {
 
         Date fechaActual = new Date();
         LocalTime currentTime = LocalTime.now();
+        inicializarST();
 
         //Verificacion de filtros para transaccion
         if(tarjetas.getIndActivo() && !tarjetas.getIndbloqueo() && utilidad.verificacionVigencia(tarjetas.getFechaTc()) && saldos.getSaldoActual() > 0){
@@ -85,6 +87,7 @@ public class servicioCompra {
 
     //Metodo para consulta de compra
     public controlCompra consultaCompra(Long transactionId){
+        inicializarST();
         Optional<controlTransacciones> respuesta = cTransaccion.findById(transactionId);
         tarjetas = rtarjetas.findByIdTc(respuesta.get().getIdtc());
         cCompra.setCardId(tarjetas.getNumeroTcEnmascarada());
@@ -122,5 +125,9 @@ public class servicioCompra {
         }
 
         return state;
+    }
+
+    public void inicializarST(){
+        this.cCompra = new controlCompra();
     }
 }

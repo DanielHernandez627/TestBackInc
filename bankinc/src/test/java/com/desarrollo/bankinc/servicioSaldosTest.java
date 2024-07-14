@@ -44,50 +44,40 @@ class servicioSaldosTest {
 
     @Test
     public void testGeneracionSaldoTc() {
-        // Configuración del mock de repositorioinfoTarjetas
-        mockTarjetas.setId(1L); // Ejemplo de ID de tarjeta simulado
+        mockTarjetas.setId(1L);
         when(Rtarjetas.findByNumeroTc(anyString())).thenReturn(mockTarjetas);
 
-        // Simular llamada al método
         servicio.generacionSaldoTc("1234567890123456");
 
-        // Verificar que se llame al método save del repositorioCSaldos
         verify(Rsaldos, times(1)).save(any(controlSaldos.class));
     }
 
     @Test
     public void testRecargaTc() {
-        // Configuración del mock de repositorioinfoTarjetas
-        mockTarjetas.setId(1L); // Ejemplo de ID de tarjeta simulado
-        mockTarjetas.setIndActivo(true); // Tarjeta activa simulada
+        mockTarjetas.setId(1L);
+        mockTarjetas.setIndActivo(true);
         when(Rtarjetas.findByNumeroTc(anyString())).thenReturn(mockTarjetas);
 
-        // Configuración del mock de repositorioCSaldos
         mockSaldos.setIdTc(mockTarjetas.getId());
+        mockSaldos.setSaldoActual(0);
         when(Rsaldos.findByIdTc(mockTarjetas.getId())).thenReturn(mockSaldos);
 
-        // Simular llamada al método
         controlSaldosTc result = servicio.recargaTc("1234567890123456", 100);
 
-        // Verificaciones
         assertEquals(100, result.getBalance());
         verify(Rsaldos, times(1)).save(any(controlSaldos.class));
     }
 
     @Test
     public void testConsultaSaldo() {
-        // Configuración del mock de repositorioinfoTarjetas
-        mockTarjetas.setId(1L); // Ejemplo de ID de tarjeta simulado
+        mockTarjetas.setId(1L);
         when(Rtarjetas.findByNumeroTc(anyString())).thenReturn(mockTarjetas);
 
-        // Configuración del mock de repositorioCSaldos
         mockSaldos.setSaldoActual(200);
         when(Rsaldos.findByIdTc(mockTarjetas.getId())).thenReturn(mockSaldos);
 
-        // Simular llamada al método
         controlSaldosTc result = servicio.consultaSaldo("1234567890123456");
 
-        // Verificaciones
         assertEquals(200, result.getBalance());
     }
 }
