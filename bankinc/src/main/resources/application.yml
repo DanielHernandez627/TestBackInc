@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://156.67.73.101/u672011682_bankinc
-    username: u672011682_bankinc
-    password: Prueba123456789*
+    url: jdbc:mysql://localhost/bankinc_tc
+    username: root
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
