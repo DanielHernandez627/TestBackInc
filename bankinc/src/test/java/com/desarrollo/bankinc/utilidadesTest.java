@@ -63,7 +63,7 @@ class utilidadesTest {
     @Test
     public void testVerificacionTiempoMasDe24Horas() {
         LocalDate fechaEvento = LocalDate.now().minusDays(1);
-        LocalTime horaEvento = LocalTime.now().minusHours(1);
+        LocalTime horaEvento = LocalTime.now().minusHours(24);
 
         assertFalse(utilidades.verificacionTiempo(fechaEvento, horaEvento));
     }

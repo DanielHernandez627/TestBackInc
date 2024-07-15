@@ -1,5 +1,6 @@
 package com.desarrollo.bankinc.servicios;
 
+import com.desarrollo.bankinc.entidades.Productos;
 import com.desarrollo.bankinc.entidades.infoTarjetas;
 import com.desarrollo.bankinc.repositorios.repositorioinfoTarjetas;
 import com.desarrollo.bankinc.repositorios.repositorioProductos;
@@ -30,35 +31,38 @@ public class servicioTarjetas implements Serializable {
     repositorioProductos productos;
 
     public String generarNumeroTC(String productId){
-
         this.tarjetas = new infoTarjetas();
-
-        //Generacion de numero de TC
         String numero_tc = null;
-        String numero_tc_enmascarado = null;
-        Random random = new Random();
-        long number = (long) (random.nextDouble() * 1_000_000_0000L);
-        numero_tc = productId + number;
-        numero_tc_enmascarado = uenmascarado.enmascararNumero(numero_tc);
 
-        //Generacion fecha vencimiento
-        String fecha_vencimiento = null;
-        int currentYear = LocalDate.now().getYear();
-        int year = currentYear + 3;
-        int month = random.nextInt(12) + 1;
-        fecha_vencimiento =  String.format("%02d/%d", month, year);
+        Productos productos1 = new Productos();
+        productos1 = productos.findByCodigo(productId);
 
-        tarjetas.setNumeroTc(numero_tc);
-        tarjetas.setFechaTc(fecha_vencimiento);
-        tarjetas.setNombreTitular(faker.name().firstName());
-        tarjetas.setApellidoTitular(faker.name().lastName());
-        tarjetas.setIndActivo(false);
-        tarjetas.setIdProducto(productos.findByCodigo(productId).getId());
-        tarjetas.setNumeroTcEnmascarada(numero_tc_enmascarado);
-        tarjetas.setIndbloqueo(false);
+        if(productos1 != null){
+            //Generacion de numero de TC
+            String numero_tc_enmascarado = null;
+            Random random = new Random();
+            long number = (long) (random.nextDouble() * 1_000_000_0000L);
+            numero_tc = productId + number;
+            numero_tc_enmascarado = uenmascarado.enmascararNumero(numero_tc);
 
-        rtarjetas.save(tarjetas);
+            //Generacion fecha vencimiento
+            String fecha_vencimiento = null;
+            int currentYear = LocalDate.now().getYear();
+            int year = currentYear + 3;
+            int month = random.nextInt(12) + 1;
+            fecha_vencimiento =  String.format("%02d/%d", month, year);
 
+            tarjetas.setNumeroTc(numero_tc);
+            tarjetas.setFechaTc(fecha_vencimiento);
+            tarjetas.setNombreTitular(faker.name().firstName());
+            tarjetas.setApellidoTitular(faker.name().lastName());
+            tarjetas.setIndActivo(false);
+            tarjetas.setIdProducto(productos.findByCodigo(productId).getId());
+            tarjetas.setNumeroTcEnmascarada(numero_tc_enmascarado);
+            tarjetas.setIndbloqueo(false);
+
+            rtarjetas.save(tarjetas);
+        }
         return numero_tc;
     }
 
